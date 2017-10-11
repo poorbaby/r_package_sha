@@ -7,3 +7,4 @@ inst/doc
 .RData
 .Rbuildignore
 .Rhistory
+./vignettes/.gitignore
