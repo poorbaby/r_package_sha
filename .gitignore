@@ -1,2 +1,9 @@
 inst/doc
+./
+../
 .Rproj.user
+.git/
+.DS_Store
+.RData
+.Rbuildignore
+.Rhistory
