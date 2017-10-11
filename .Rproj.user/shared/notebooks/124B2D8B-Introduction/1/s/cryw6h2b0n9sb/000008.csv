@@ -1,0 +1,7 @@
+"0","ans <- mydata %>% "
+"0","  filter(Weather == ""Sunny"") %>% "
+"0","  group_by(DayType) %>% "
+"0","  summarise(r = cor(SleepDuration, Tempreture)) %>% "
+"0","  mutate(r = round(r, 2)) %>% "
+"0","  arrange(desc(r))"
+"0","knitr::kable(ans, format = ""markdown"", align = ""l"")  "

@@ -1,0 +1,7 @@
+"0","model.carni = lm(log(sleepdata$bodywt[sleepdata$vore==""carni""])~"
+"0","                   sleepdata$sleep_total[sleepdata$vore==""carni""])"
+"0","plot(sleepdata$sleep_total[sleepdata$vore==""carni""],"
+"0","     log(sleepdata$bodywt[sleepdata$vore==""carni""]),"
+"0","     xlab = ""sleep total "", "
+"0","     ylab = ""Log Body Weight (kg)"","
+"0","     main = ""Log Body weight Vs Sleep Total on Carnivore"")"

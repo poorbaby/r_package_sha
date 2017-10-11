@@ -1,0 +1,6 @@
+"0","ggplot (sleepdata, aes (x = sleep_total , y = bodywt)) + "
+"0","  theme_bw() +"
+"0","  geom_point() +"
+"0","  ggtitle(""Body Weight vs. Sleep Total"") +"
+"0","  xlab(""Sleep Total"") +"
+"0","  ylab(""Body Weight (kg)"")"

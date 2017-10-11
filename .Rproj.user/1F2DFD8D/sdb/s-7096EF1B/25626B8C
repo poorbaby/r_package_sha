@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "#' Checking statistically significantly mean difference across the groups\n#'\n#'\n#' @description To check weather there is statistically significantly difference across the groups.\n#' @param data a dataframe\n#' @param x    the continues variable to test weather its average is significantly difference across the groups\n#' @param y    the categorical variable to group\n#'\n#'\n#' @return a summary of anova test\n#' @export\n#' @importFrom stats aov\n#' @examples\n#' aov_t(sleepdurationDay,\"SleepDuration\", \"DayType\")\naov_t <- function(data, x, y) {\n  summary(aov(data[[x]] ~ data[[y]]))\n}\n",
+    "created" : 1507682187615.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "826917182",
+    "id" : "25626B8C",
+    "lastKnownWriteTime" : 1507175848,
+    "last_content_update" : 1507175848,
+    "path" : "~/Desktop/sha/R/anova.R",
+    "project_path" : "R/anova.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

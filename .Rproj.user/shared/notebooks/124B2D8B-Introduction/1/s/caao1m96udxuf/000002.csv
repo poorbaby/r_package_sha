@@ -1,0 +1,1 @@
+"0","knitr::kable(head(mydata), format = ""markdown"", align = 'c')"

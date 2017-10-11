@@ -1,0 +1,237 @@
+---
+title: "Intro to Sha Package to conduct data analysis"
+author: "Yunrou Gong"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_document
+
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+# Introduction
+The *sha* package is used for analysing sleep duration and other atrributes related to health. The name **Sha**  is the abbreviation of Sleep Health Analysis. We may have curious about weather sleep duration will be influenced by the weight, tempreture, activities, day of the week, and heart rate. Intuitively, sleep time and the other attributes are not that correlated. But, we could use this package to conduct detail analysis to answer intereting questions, which may be counter intuitive. 
+
+# Data Collecting 
+In order to show you how to use *sha* package to do intereting analysis on sleep and health data, I collected my own data via google sheet. I made it published so you can fetch this dataset via "googlesheets" package. 
+```{r loaddata, echo=TRUE}
+library("googlesheets")
+googlekey <- gs_url("https://docs.google.com/spreadsheets/d/1KdOw0FIxY2Kt8UgY16F3UMQSC7KJaBgtmewNZUGuLY8/edit#gid=0",lookup = FALSE,visibility = "public")
+mydata <- gs_read(googlekey, skip = 3)
+```
+```{r data_view, echo=TRUE, results='asis'}
+knitr::kable(head(mydata), format = "markdown", align = 'c')
+```
+This dataset contains 8 variables related to one individual's sleep and health data. Here is the variable explanation of the collected dataset.
+
+1. Date: in format of month/date/year started from Sep.11 2017
+2. DayofWeek: the name of the day during a week (Mon,Tue,Wed,Thu,Fri,Sat,Sun)
+3. Weight: body weight in kg
+4. SleepDuration: total sleep time per night measured in hour
+5. Weather: daily condition of the weather (Sunny, Cloudy, Rainy, Snowy)
+6. Tempreture: daily average tempreture in Celsius
+7. ActivitybySteps: a measurement of activity in steps
+8. Heart Rate: heart rate in beats per minute (bpm)
+
+
+## Import the package *sha*
+
+Now, the following analysis are based on this dataset which is named as mydata and showing you how to use the functions from *sha* package.
+
+```{r sha, echo=TRUE}
+library(sha)
+```
+
+## Sleep duration difference between weekday and weekend 
+I am intereting to see if there any significant difference on sleep duration between weekday and weekend. So the function *classifyday* will allow us to make a new variable named Daytype, which tag the day into weekday or weekend and then combined into the original dataset. Then we can do some analysis on sleep duration by the day type. 
+
+```{r classifyday, echo=TRUE, results='asis'}
+c <- classifyday(df = mydata, x = "DayofWeek")
+mydata$DayType <- as.factor(c)
+knitr::kable(head(mydata), format = "markdown", align = 'c', caption = "Sleep Health Data Set")
+```
+
+
+# Explotory Data Analysis
+## Scatter plot
+You can use *plot_scatter* function to make scatter plot on two continues variable by group to check if they have linear relationship and how does the relationship accross differnty group type. 
+The below graph shows us the relationship between seelp duration and weight. It seems that there is no significant linear relationship in both of the groups. However, we will also see that the data point of weekend has larger sleep time than weekday points. Thus, we can look at the distribution by plot a box plot. 
+```{r scatterplot, echo= TRUE}
+plot_scatter(mydata,"Weight","SleepDuration", "DayType")
+
+```
+
+Here is another example for looking at the relationship between activity steps and sleep duation.
+You can use the *plot_scatter* function to make the plots on any two of the continues variable in the data set, and grouped by a categorical vatiable. 
+
+```{r scatterplot2, echo=TRUE}
+plot_scatter(mydata,"Activity","SleepDuration", "DayType")
+```
+
+From the above scatter plot, it seems that there is linear relationship between sleep duration and activity.
+
+
+## Box plot 
+Also, you can clss *plot_box* function to make the box plot according to the group variable. So, this will show you how disperse the data is distributed , how skew the distribution may be. Also, from the box plot below, we can also find out that the sleep duration are different between weekday and weekend. May be we could do a logsitic regression to further see how the DayType will affect the Sleep Duration. 
+
+```{r boxplot, echo=TRUE}
+plot_box(mydata, x = "DayType", y= "SleepDuration")
+```
+
+## Basic Statistics and useful information
+Here, we are going to use "tidyverse" library to manupilate the collected dataset and get the useful information. 
+
+```{r lode_tidyverse, echo=TRUE}
+library(tidyverse)
+```
+
+
+```{r count, echo=TRUE, results='asis'}
+mydata %>%
+  summarize(n = n())
+```
+The above code give us the number of observations in the *mydata* dataset.
+We can also  get the number of observations in specfic conditions. For example, we are going to check how many observations are there that Sleep duration are over 8 hours and the tempreture is over 20.
+```{r}
+mydata %>% 
+  filter(SleepDuration > 8 & Tempreture > 20) %>% 
+  summarize(n = n())
+```
+So there are 9 days that sleep duration over 8 hours and the tempreture are above 20. 
+
+Here is another example to show us the average activity on each of the day with in week. It says that wednesday has the largest volumn of avtivity on average. 
+```{r rank, echo=TRUE}
+mydata %>% 
+  group_by(DayofWeek) %>% 
+  summarise(avg_activity = mean(Activity)) %>% 
+  mutate(avg_activity = round(avg_activity, 2)) %>% 
+  arrange(desc(avg_activity))
+  
+```
+
+
+
+We are going to find out the average sleep duration on weekday and on weekend and arrange them to see which group has longer sleep duration.
+```{r sleep_by_day, echo=TRUE, results= 'asis'}
+sleep_by_day <- mydata %>% 
+  group_by(DayType) %>% 
+  summarise(avg_sleep = mean (SleepDuration)) %>% 
+  mutate(avg_sleep = round (avg_sleep, 2)) %>% 
+  arrange(desc(avg_sleep))
+
+knitr::kable(sleep_by_day, format = "markdown", align = 'l')
+  
+```
+The results is the same as showing on the boxplot graph that sleep duration are longer at weekend on average. 
+Also, we can get the average sleep duration for different weather condition.
+```{r avg_sleep2, echo=TRUE, results= 'asis'}
+avg_sleep_weather <- mydata %>% 
+  group_by(Weather) %>% 
+  summarise(avg_sleep = mean(SleepDuration)) %>% 
+  mutate(avg_sleep = round(avg_sleep, 2)) %>% 
+  arrange(desc(avg_sleep))
+
+knitr::kable(avg_sleep_weather, format = "markdown", align = 'l')
+
+```
+
+So from the above table, we will see that sleep duration of Rainy weather has the longest with 8.59 hour on averge , followed by Sunny and Cloudy weather conditon, with 8.52 hour, 7.93 hour respectively. 
+
+
+## Checking statistically significantly mean difference across the groups
+Now let's check weather there is statistically significantly difference on average sleep duration between weekday and weekend.
+We are using oneway-anova test so it is made strong assumption that the dependent variable observation is normal distributed and do not have outliers.
+
+**H0: The mean of sleep duration between weekday and weekend are equal**
+
+**H1: At least one is not equal to the others**
+```{r anova_test, echo=TRUE}
+summary(aov(SleepDuration ~ DayType, data = mydata ))
+
+```
+From the above testing results, the p-value(0.0008) for this test is far less than the 0.05 significant level. So we reject the null hypothesis and conclude that there is significant difference in the average sleep duration between weekday and weekend under 99.99% confidence. 
+
+We again did the oneway-anova test on the sleep duration across different weather conditons:
+
+**H0: The mean of sleep duration on different weather conditions are equal**
+
+**H1: At least one is not equal to the others**
+
+```{r anova_test2, echo=TRUE}
+summary(aov(SleepDuration ~ Weather, data = mydata))
+```
+Since the p-value (0.793) is larger than the 0.05 significant level, we fail to reject the null hypotheis that the mean of sleep duration on different weather conditions are equal. So there is no significant differences on average sleep duration accross different weather conditions under given data and evidence , with 95 % confidence. 
+
+# Correlation Matrix
+
+In the dataset, the weight , SleepDuration, Tempreture, Activity and Heart Rate are continues variables. So we can do a multiple correlation analysis on those continues variables to check the pair relationship. So we can use the function *paircorr* in "sha" package to calculate all the pair correlation among all the continues variable as *paircorr* will automatically detect the continues variables and give you the results. 
+
+```{r paircorr1, echo=TRUE, results='asis'}
+knitr::kable(paircorr(mydata), format = "markdown", align = "l", padding = 2 )
+```
+
+From the above correlation matrix, we will find out that the activity and sleep duration has the largest negative correlation which is about -0.54. Also, the interesting thing is that the correlation between heart rate and tempreture is about -0.43.
+
+
+Additionaly, we can use **tidyverse** library to calculate the correlation between two continues variables by set more condtions. For example, we are interested in the correlation between the sleep duration and the tempreture separately for each day type only for Sunny weather condition, and return a sorted list of those correlation coeffients rounded to two digits. 
+```{r corrleration2, echo=TRUE, results='asis'}
+ans <- mydata %>% 
+  filter(Weather == "Sunny") %>% 
+  group_by(DayType) %>% 
+  summarise(r = cor(SleepDuration, Tempreture)) %>% 
+  mutate(r = round(r, 2)) %>% 
+  arrange(desc(r))
+
+knitr::kable(ans, format = "markdown", align = "l")  
+```
+
+
+
+# Simple Linear Regression Model
+According to the above correlation results, we could conduct a simple linear regression models to quantify the association between activity and sleep duration, also the association between heart rate and tempreture. 
+
+```{r slm1, echo=TRUE}
+slm_s(mydata, x = "Tempreture", y="Heart Rate")
+modelplot(mydata, x = "Tempreture", y="Heart Rate")
+```
+
+The equation of the above linear model can be constructed from the output:
+
+**Predicted Heart Rate = 93.43  + (-0.8587)* Tempreture**
+
+The interpretation for the slope coefficient: With a unit celsius increase in tempreture,the heart rate, on average, decrease by approximately 1 bpm.
+
+The interpretation for the intercept coefficient: When the tempreture is 0,the heart rate, on average, is 94 bpm. 
+
+The residual standard error is about 6.424; this is an approximation of how much the residuas tend to deviate around the regression line.
+
+The coefficient of determination is about 0.14; approximately 14% of the variability in the heart rate variable is explained by the tempreture variable.
+
+The intercept is extremely significant and the slope p value is 0.05, it is sifnificant correlated between the tempreture and heart rate under 95% condifence level.
+So the overall model is significant but the quality of the model is poor as only 14% variability in the heart rate variable is explained by the tempreture variable.
+
+```{r slm2, echo=TRUE}
+slm_s(mydata, x = "Activity", y="SleepDuration")
+modelplot(mydata, x = "Activity", y="SleepDuration")
+```
+
+The equation of the above linear model can be constructed from the output:
+
+**Predicted Sleep Duration = 9.92  + (-0.0004)* Activity**
+
+The interpretation for the slope coefficient: With a unit increase in activity,the sleep duration, on average, decrease by approximately very little , 0.0004.
+
+The coefficient of determination is about 0.26; approximately 26% of the variability in the heart rate variable is explained by the tempreture variable.
+
+The overall model is significant as p value is less than 0.05,  but the quality of the model is also very poor as only 25% variability in the heart rate variable is explained by the tempreture variable.
+
+
+# 
+# Conclusion
+For the further analysis, we can think about fitting a multiple linear regression model to predict the sleep duration by using the remaining attributes. Maybe it will cause multicollinearity problem, but we can first build a saturated model and use BIC or AIC model selection method, to reduce the attributes in the model. 
+
+```{r info, echo= T}
+sessionInfo()
+```
+
+

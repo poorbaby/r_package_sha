@@ -1,0 +1,1 @@
+"0","knitr::kable(paircorr(mydata), format = ""markdown"", align = ""l"", padding = 2 )"
