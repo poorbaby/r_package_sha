@@ -1,3 +1,0 @@
-"0","mydata %>% "
-"0","  filter(SleepDuration > 8 & Tempreture > 20) %>% "
-"0","  summarize(n = n())"

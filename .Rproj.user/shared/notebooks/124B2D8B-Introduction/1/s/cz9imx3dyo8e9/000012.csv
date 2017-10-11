@@ -1,6 +1,0 @@
-"0","avg_sleep_weather <- mydata %>% "
-"0","  group_by(Weather) %>% "
-"0","  summarise(avg_sleep = mean(SleepDuration)) %>% "
-"0","  mutate(avg_sleep = round(avg_sleep, 2)) %>% "
-"0","  arrange(desc(avg_sleep))"
-"0","knitr::kable(avg_sleep_weather, format = ""markdown"", align = 'l')"

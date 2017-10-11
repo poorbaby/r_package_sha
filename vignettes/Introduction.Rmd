@@ -1,5 +1,5 @@
 ---
-title: "Intro to Sha Package to conduct data analysis"
+title: "Intro to Sha Package for Sleep and Health Analysis"
 author: "Yunrou Gong"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
@@ -14,7 +14,7 @@ The *sha* package is used for analysing sleep duration and other atrributes rela
 
 # Data Collecting 
 In order to show you how to use *sha* package to do intereting analysis on sleep and health data, I collected my own data via google sheet. I made it published so you can fetch this dataset via "googlesheets" package. 
-```{r loaddata, echo=TRUE}
+```{r loaddata, echo=TRUE, message=FALSE}
 library("googlesheets")
 googlekey <- gs_url("https://docs.google.com/spreadsheets/d/1KdOw0FIxY2Kt8UgY16F3UMQSC7KJaBgtmewNZUGuLY8/edit#gid=0",lookup = FALSE,visibility = "public")
 mydata <- gs_read(googlekey, skip = 3)
@@ -48,7 +48,7 @@ I am intereting to see if there any significant difference on sleep duration bet
 ```{r classifyday, echo=TRUE, results='asis'}
 c <- classifyday(df = mydata, x = "DayofWeek")
 mydata$DayType <- as.factor(c)
-knitr::kable(head(mydata), format = "markdown", align = 'c', caption = "Sleep Health Data Set")
+knitr::kable(head(mydata), format = "markdown", align = 'c')
 ```
 
 
@@ -81,32 +81,36 @@ plot_box(mydata, x = "DayType", y= "SleepDuration")
 ## Basic Statistics and useful information
 Here, we are going to use "tidyverse" library to manupilate the collected dataset and get the useful information. 
 
-```{r lode_tidyverse, echo=TRUE}
+```{r lode_tidyverse, echo=TRUE, message = FALSE}
 library(tidyverse)
 ```
 
 
 ```{r count, echo=TRUE, results='asis'}
-mydata %>%
+n <- mydata %>%
   summarize(n = n())
+knitr::kable(n, format = "markdown", align = 'l')
 ```
+
 The above code give us the number of observations in the *mydata* dataset.
 We can also  get the number of observations in specfic conditions. For example, we are going to check how many observations are there that Sleep duration are over 8 hours and the tempreture is over 20.
-```{r}
-mydata %>% 
+
+```{r count2, echo=TRUE, results='asis'}
+count2 <- mydata %>% 
   filter(SleepDuration > 8 & Tempreture > 20) %>% 
   summarize(n = n())
+knitr::kable(count2, format = "markdown", align = 'l')
 ```
 So there are 9 days that sleep duration over 8 hours and the tempreture are above 20. 
 
 Here is another example to show us the average activity on each of the day with in week. It says that wednesday has the largest volumn of avtivity on average. 
 ```{r rank, echo=TRUE}
-mydata %>% 
+rank <- mydata %>% 
   group_by(DayofWeek) %>% 
   summarise(avg_activity = mean(Activity)) %>% 
   mutate(avg_activity = round(avg_activity, 2)) %>% 
   arrange(desc(avg_activity))
-  
+knitr::kable(rank, format = "markdown", align = "l")  
 ```
 
 

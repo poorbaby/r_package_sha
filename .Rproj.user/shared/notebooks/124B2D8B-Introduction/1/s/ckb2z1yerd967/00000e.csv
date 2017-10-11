@@ -1,6 +1,0 @@
-"0","sleep_by_day <- mydata %>% "
-"0","  group_by(DayType) %>% "
-"0","  summarise(avg_sleep = mean (SleepDuration)) %>% "
-"0","  mutate(avg_sleep = round (avg_sleep, 2)) %>% "
-"0","  arrange(desc(avg_sleep))"
-"0","knitr::kable(sleep_by_day, format = ""markdown"", align = 'l')"

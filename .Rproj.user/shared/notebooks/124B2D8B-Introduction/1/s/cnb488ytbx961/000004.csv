@@ -1,5 +1,0 @@
-"0","mydata %>% "
-"0","  group_by(DayofWeek) %>% "
-"0","  summarise(avg_activity = mean(Activity)) %>% "
-"0","  mutate(avg_activity = round(avg_activity, 2)) %>% "
-"0","  arrange(desc(avg_activity))"
