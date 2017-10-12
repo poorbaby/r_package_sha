@@ -15,10 +15,10 @@
 #' @seealso \code{\link{slm_s}}
 #'
 #' @examples
-#' slm_log(sleepduration, "Tempreture", "Heart Rate")
+#' slm_log(sleepduration, "Tempreture", "SleepDuration")
 #'
 #'
 slm_log <- function(data, x, y){
   model.t = lm(log(data[[y]]) ~ data[[x]])
-  summary(model.t)
+  return(summary(model.t))
 }

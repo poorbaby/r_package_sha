@@ -22,7 +22,7 @@ Since the dependent variable may violate the normality assumption, so in this fu
 variable is log transformed to let it follwo normal distrbution.
 }
 \examples{
-slm_log(sleepduration, "Tempreture", "Heart Rate")
+slm_log(sleepduration, "Tempreture", "SleepDuration")
 
 
 }

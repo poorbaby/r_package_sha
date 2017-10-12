@@ -7,16 +7,18 @@
 #' @return a plot
 #' @export
 #' @import graphics
-#' @importFrom stats lm
+#' @importFrom stats lm coef
 #' @seealso \code{\link{modelplot}}
 #' @examples
-#' modelplot(sleepduration,"Tempreture", "Heart Rate")
+#' log_modelplot(sleepduration,"Tempreture", "SleepDuration")
 #'
 log_modelplot <- function(data,x,y){
   model.t = lm(log(data[[y]]) ~ data[[x]])
-  plot(data[[x]],data[[y]],
+  plot(data[[x]], log(data[[y]]),
        xlab = x,
-       ylab = y,
+       ylab = paste("log", y),
        main = paste(y,"association with", x))
-  abline(model.t, lty = 2, col = "red")
+  abline(model.t, lty = 2, col = "blue")
+  eq <- paste("Predicted log", y, "=", round(coef(model.t)[1], 4), "+ (", round(coef(model.t)[2], 6), ") *", x )
+  mtext(eq, 3, line=-2, col = "Brown")
 }

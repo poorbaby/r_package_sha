@@ -10,7 +10,7 @@
 #' @importFrom stats lm coef
 #' @seealso \code{\link{log_modelplot}}
 #' @examples
-#' modelplot(sleepduration,"Tempreture", "Heart Rate")
+#' modelplot(sleepduration,"Tempreture", "SleepDuration")
 #'
 modelplot <- function(data,x,y){
   model = lm(data[[y]]~data[[x]])

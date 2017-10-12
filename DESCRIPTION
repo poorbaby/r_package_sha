@@ -12,7 +12,8 @@ LazyData: true
 RoxygenNote: 6.0.1
 Imports: googlesheets,
     ggplot2,
-    tidyverse
+    tidyverse,
+    car
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr

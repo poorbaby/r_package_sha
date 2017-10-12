@@ -6,26 +6,17 @@ mydata <- gs_read(googlekey, skip = 3)
 ## ----data_view, echo=TRUE, results='asis'--------------------------------
 knitr::kable(head(mydata), format = "markdown", align = 'c')
 
-## ----sha, echo=TRUE------------------------------------------------------
-library(sha)
-
-## ----classifyday, echo=TRUE, results='asis'------------------------------
-c <- classifyday(df = mydata, x = "DayofWeek")
-mydata$DayType <- as.factor(c)
-knitr::kable(head(mydata), format = "markdown", align = 'c')
-
-## ----scatterplot, echo= TRUE---------------------------------------------
-plot_scatter(mydata,"Weight","SleepDuration", "DayType")
-
-
-## ----scatterplot2, echo=TRUE---------------------------------------------
-plot_scatter(mydata,"Activity","SleepDuration", "DayType")
-
-## ----boxplot, echo=TRUE--------------------------------------------------
-plot_box(mydata, x = "DayType", y= "SleepDuration")
-
-## ----lode_tidyverse, echo=TRUE, message = FALSE--------------------------
+## ----dataclean01, echo=TRUE, message=FALSE-------------------------------
 library(tidyverse)
+mydata <- mydata %>% 
+  mutate(DayType = ifelse(DayofWeek %in% c("Sat", "Sun"), "Weekend", "Weekday")) %>% 
+  select(-DayofWeek) 
+
+## ----schema, echo=TRUE, results='asis'-----------------------------------
+sch <- c("Date", "Weight(kg)", "SleepDuration(hr)", "Weatehr", "Tempreture(c)", "Activity(steps)", 
+         "HeartRate(bpm)", "DayType")
+knitr::kable(head(mydata, 10), col.names = sch, align = "c")
+
 
 ## ----count, echo=TRUE, results='asis'------------------------------------
 n <- mydata %>%
@@ -37,14 +28,6 @@ count2 <- mydata %>%
   filter(SleepDuration > 8 & Tempreture > 20) %>% 
   summarize(n = n())
 knitr::kable(count2, format = "markdown", align = 'l')
-
-## ----rank, echo=TRUE-----------------------------------------------------
-rank <- mydata %>% 
-  group_by(DayofWeek) %>% 
-  summarise(avg_activity = mean(Activity)) %>% 
-  mutate(avg_activity = round(avg_activity, 2)) %>% 
-  arrange(desc(avg_activity))
-knitr::kable(rank, format = "markdown", align = "l")  
 
 ## ----sleep_by_day, echo=TRUE, results= 'asis'----------------------------
 sleep_by_day <- mydata %>% 
@@ -65,6 +48,24 @@ avg_sleep_weather <- mydata %>%
 
 knitr::kable(avg_sleep_weather, format = "markdown", align = 'l')
 
+
+## ----sha, echo=TRUE, message=FALSE---------------------------------------
+library(sha)
+
+## ----as.factor, echo=TRUE------------------------------------------------
+mydata$DayType <- as.factor(mydata$DayType)
+mydata$Weather <- as.factor(mydata$Weather)
+str(mydata)
+
+## ----scatterplot, echo= TRUE---------------------------------------------
+plot_scatter(mydata,"Weight","SleepDuration", "DayType")
+
+
+## ----scatterplot2, echo=TRUE---------------------------------------------
+plot_scatter(mydata,"Activity","SleepDuration", "DayType")
+
+## ----boxplot, echo=TRUE--------------------------------------------------
+plot_box(mydata, x = "DayType", y= "SleepDuration")
 
 ## ----anova_test, echo=TRUE-----------------------------------------------
 summary(aov(SleepDuration ~ DayType, data = mydata ))
@@ -87,12 +88,24 @@ ans <- mydata %>%
 knitr::kable(ans, format = "markdown", align = "l")  
 
 ## ----slm1, echo=TRUE-----------------------------------------------------
-slm_s(mydata, x = "Tempreture", y="Heart Rate")
-modelplot(mydata, x = "Tempreture", y="Heart Rate")
+slm_model <- slm_s(mydata, x = "Tempreture", y="HeartRate")
+slm_model
+modelplot(mydata, x = "Tempreture", y="HeartRate")
 
-## ----slm2, echo=TRUE-----------------------------------------------------
-slm_s(mydata, x = "Activity", y="SleepDuration")
-modelplot(mydata, x = "Activity", y="SleepDuration")
+## ----normalitycheck, echo=TRUE-------------------------------------------
+qqnorm(slm_model$residuals)
+qqline(slm_model$residuals)
+
+## ----scattermatrix, echo=TRUE--------------------------------------------
+plot(mydata %>% select(SleepDuration, Weight, Tempreture, Activity, HeartRate))
+
+## ----ml01, echo=TRUE-----------------------------------------------------
+ml.saturated = lm(SleepDuration ~ Weight + Tempreture + Activity + HeartRate +  DayType, 
+                  data= mydata)
+summary(ml.saturated)
+
+## ----assumption_check, echo= TRUE----------------------------------------
+plot(ml.saturated)
 
 ## ----info, echo= T-------------------------------------------------------
 sessionInfo()
