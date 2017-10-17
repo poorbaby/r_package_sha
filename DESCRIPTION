@@ -1,7 +1,7 @@
 Package: sha
 Type: Package
 Title: Sleep Health Data Analysis
-Version: 0.1.0
+Version: 0.1.1
 Author: Yunrou Gong
 Maintainer: Yunrou Gong <gongyunrou@gmail.com>
 Description: This package is used for making personal sleep health analysis. 
