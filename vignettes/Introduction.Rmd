@@ -22,17 +22,22 @@ mydata <- gs_read(googlekey, skip = 3)
 ```{r data_view, echo=TRUE, results='asis'}
 knitr::kable(head(mydata), format = "markdown", align = 'c')
 ```
-The collected  dataset contains 8 variables related to one individual's sleep and health data and recoded each observation daily. 
+```{r str_data, echo= FALSE, include= FALSE}
+no_of_col <- dim(mydata)[2]
+var_names <- colnames(mydata)
+```
+
+The collected  dataset contains `r no_of_col` variables related to one individual's sleep and health data and recoded each observation daily. 
 The following is the variable explanation:
 
-1. Date: in format of month/date/year started from Sep.11 2017
-2. DayofWeek: the name of the day during a week (Mon,Tue,Wed,Thu,Fri,Sat,Sun)
-3. Weight: body weight in kg
-4. SleepDuration: total sleep time per night measured in hour
-5. Weather: daily condition of the weather (Sunny, Cloudy, Rainy, Snowy)
-6. Tempreture: daily average tempreture in Celsius
-7. ActivitybySteps: a measurement of activity in steps
-8. Heart Rate: heart rate in beats per minute (bpm)
+1. `r var_names[1]`: in format of month/date/year started from Sep.11 2017
+2. `r var_names[2]`: the name of the day during a week (Mon,Tue,Wed,Thu,Fri,Sat,Sun)
+3. `r var_names[3]`: body weight in kg
+4. `r var_names[4]`: total sleep time per night measured in hour
+5. `r var_names[5]`: daily condition of the weather (Sunny, Cloudy, Rainy, Snowy)
+6. `r var_names[6]`: daily average tempreture in Celsius
+7. `r var_names[7]`: ActivitybySteps: a measurement of activity in steps
+8. `r var_names[8]`: heart rate in beats per minute (bpm)
 
 
 # Data Cleaning
