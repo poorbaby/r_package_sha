@@ -235,7 +235,8 @@ It seemes that the data are not follow normal distribution, which violte the the
 ### Multiple Linear Regression Model
 Create a scatter matrix plot on all the continues variables. 
 ```{r scattermatrix, echo=TRUE}
-plot(mydata %>% select(SleepDuration, Weight, Tempreture, Activity, HeartRate))
+par(ps = 12, cex = 1, cex.main = 1)
+plot(mydata %>% select(SleepDuration, Weight, Tempreture, Activity, HeartRate), pch=16, col="blue", main="Matrix Scatterplot of SleepDuration, Weight, Tempreture, Activity and HeartRate")
 ```
 
 From the above graph, the variables seems that corrlated to each other , so it may arise multicollinearity problem. 
