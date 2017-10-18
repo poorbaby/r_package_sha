@@ -247,30 +247,32 @@ Creating a multiple linear regression model included all variables except the da
 ```{r ml01, echo=TRUE}
 ml.saturated = lm(SleepDuration ~ Weight + Tempreture + Activity + HeartRate +  DayType, 
                   data= mydata)
-summary(ml.saturated)
+mlr_sum <- summary(ml.saturated)
+
+knitr::kable(mlr_sum $coef, digits = c(4, 4, 3, 4), format = 'markdown')
 ```
 
 The regression equation is :
 
-**SleepDuration = 1.315 + 0.039*Weight + 0.043*Tempreture - 0.0003*Activity + 0.064*HeartRate - 1.478*Weekend**
+**SleepDuration = 15.089 + (-0.217) * Weight + 0.106 * Tempreture - 0.0003 * Activity + 0.0151 * HeartRate - 1.38 * Weekend**
 
 Interpretion of the above equation under our problem context :
 
-* When all attributes data are 0 and the day is weekend, the average expected duration of sleep is about 1.315 hour which does not make sense in context of our problem
-* As the weight variable increases by one point, the sleep time increases on average by about 0.039 hour (approximately 140 second) WHILE HOLDING ALL OTHER VARIABLES CONSTANT
-* As the tempreture increases by one point, the sleep time increases on average by about 0.043 hour (approximately 155 second) WHILE HOLDING ALL OTHER VARIABLES CONSTANT.
-* As the activity increases by one step, the duration of sleep decreases on average by approximately 2 second, WHILE HOLDING ALL OTHER VARIABLES CONSTANT
-* As the heart rate increase by 1 bmp, the duration of sleep increases on average by approximately 230 second, WHILE HOLDING ALL OTHER VARIABLES CONSTANT
-* The average difference in sleep duration between weekend and weekday is approximately 89 minute, WHILE HOLDING ALL OTHER VARIABLES CONSTANT
+* When all attributes data are 0 and the day is weekend, the average expected duration of sleep is about 15 hour. 
+* As the weight variable increases by one point, the sleep time decreases on average by about 0.217 hour (approximately 13 minute) while holding all other variables constant
+* As the tempreture increases by one point, the sleep time increases on average by about 0.106 hour (approximately 6 minute) while holding all other variables constant
+* As the activity increases by one step, the duration of sleep decreases on average by approximately 2 second, while holding all other variables constant
+* As the heart rate increase by 1 bmp, the duration of sleep increases on average by approximately 55 second, while holding all other variables constant
+* The average difference in sleep duration between weekend and weekday is approximately 83 minute, while holding all other variables constant
 
-Although only two of the attributes Activity and DayType are significant, the overall regression is significant as the p-value is far less than 0.05. 
+Although none of p-value of the attributes are less than 0.05, the overall regression is significant as the p-value is far less than 0.05. 
 
-The RSE is about 1.514, which is an estimate of the average deviation of the observations around the regression line.
+The RSE is about 1.576, which is an estimate of the average deviation of the observations around the regression line.
 
-More importanly, the adjusted R square is 0.335, meaning that approximately 33.5% of the variation in sleep duration is accounted for by the variables in our model, which indicates that the model is kind of poor in predicating the duration of sleep. Maybe, we should investigate the assumptions of the model. 
+More importanly, the adjusted R square is 0.3495, meaning that approximately 35 of the variation in sleep duration is accounted for by the variables in our model, which indicates that the model is kind of poor in predicating the duration of sleep. Maybe, we should investigate the assumptions of the model. 
 
 ```{r assumption_check, echo= TRUE}
-plot(ml.saturated)
+plot(ml.saturated, which = c(1,2))
 ```
 
 According to the Q-Q plots, we will see that the data are not normal distributed which violated the Normality assumption for linear modelling. 
