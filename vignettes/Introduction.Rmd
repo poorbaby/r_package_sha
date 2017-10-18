@@ -66,22 +66,21 @@ Now, the following analysis are based on this dataset which is named as mydata.
 Here, we are going to use "tidyverse" library to manupilate the "mydata" dataset and get the useful information. 
 
 
-```{r count, echo=TRUE, results='asis'}
+```{r count, echo=TRUE }
 n <- mydata %>%
   summarize(n = n())
-knitr::kable(n, format = "markdown", align = 'l')
 ```
 
-The above code give us the number of observations in the *mydata* dataset.
+The above code give us the number of observations of a dataset. There are `r n` observations in the *mydata* dataset
 We can also  get the number of observations in specfic conditions. For example, we are going to check how many observations are there that Sleep duration are over 8 hours and the tempreture is over 20.
 
-```{r count2, echo=TRUE, results='asis'}
+```{r count2, echo=TRUE }
 count2 <- mydata %>% 
   filter(SleepDuration > 8 & Tempreture > 20) %>% 
   summarize(n = n())
-knitr::kable(count2, format = "markdown", align = 'l')
+
 ```
-So there are 9 days that sleep duration over 8 hours and the tempreture are above 20. 
+So there are `r count2` days that sleep duration over 8 hours and the tempreture are above 20. 
 
 We are going to find out the average sleep duration on weekday and on weekend and arrange them to see which group has longer sleep duration.
 ```{r sleep_by_day, echo=TRUE, results= 'asis'}
@@ -109,7 +108,7 @@ knitr::kable(avg_sleep_weather, format = "markdown", align = 'l')
 
 ```
 
-So from the above table, we will see that sleep duration of Rainy weather has the longest with 8.59 hour on averge , followed by Sunny and Cloudy weather conditon, with 8.52 hour, 7.93 hour respectively. 
+So from the above table, we will see that sleep duration of Sunny weather has the longest with `r avg_sleep_weather$avg_sleep[1]` hour on average , followed by Cloudy and Rainy weather condition, with `r avg_sleep_weather$avg_sleep[2]` hour,`r avg_sleep_weather$avg_sleep[3]`hour respectively. 
 
 
 ### Import the package *sha*
@@ -122,7 +121,6 @@ To make the catergorical variable to factor variable for following analysis.
 ```{r as.factor, echo=TRUE}
 mydata$DayType <- as.factor(mydata$DayType)
 mydata$Weather <- as.factor(mydata$Weather)
-str(mydata)
 ```
 
 
@@ -163,7 +161,7 @@ We are using oneway-anova test so it is made strong assumption that the dependen
 summary(aov(SleepDuration ~ DayType, data = mydata ))
 
 ```
-From the above testing results, the p-value(0.0008) for this test is far less than the 0.05 significant level. So we reject the null hypothesis and conclude that there is significant difference in the average sleep duration between weekday and weekend under 99.99% confidence. 
+From the above testing results, the p-value for this test is far less than the 0.05 significant level. So we reject the null hypothesis and conclude that there is significant difference in the average sleep duration between weekday and weekend under 99.99% confidence. 
 
 We again did the oneway-anova test on the sleep duration across different weather conditons:
 
@@ -174,7 +172,7 @@ We again did the oneway-anova test on the sleep duration across different weathe
 ```{r anova_test2, echo=TRUE}
 summary(aov(SleepDuration ~ Weather, data = mydata))
 ```
-Since the p-value (0.793) is larger than the 0.05 significant level, we fail to reject the null hypotheis that the mean of sleep duration on different weather conditions are equal. So there is no significant differences on average sleep duration accross different weather conditions under given data and evidence , with 95 % confidence. 
+Since the p-value is larger than the 0.05 significant level, we fail to reject the null hypotheis that the mean of sleep duration on different weather conditions are equal. So there is no significant differences on average sleep duration accross different weather conditions under given data and evidence , with 95 % confidence. 
 
 ## Correlation Matrix
 
@@ -212,26 +210,26 @@ modelplot(mydata, x = "Tempreture", y="HeartRate")
 
 The equation of the above linear model can be constructed from the output:
 
-**Predicted Heart Rate = 93.43  + (-0.8587)* Tempreture**
+**Predicted Heart Rate  = ** `r round(coef(slm_model)[1], 4)` **+ (**`r round(coef(slm_model)[2],4)`**) * Tempreture**
 
-The interpretation for the slope coefficient: With a unit celsius increase in tempreture,the heart rate, on average, decrease by approximately 1 bpm.
+The interpretation for the slope coefficient: With a unit celsius increase in tempreture,the heart rate, on average, decrease by approximately 0.5 bpm.
 
-The interpretation for the intercept coefficient: When the tempreture is 0,the heart rate, on average, is 94 bpm. 
+The interpretation for the intercept coefficient: When the tempreture is 0,the heart rate, on average, is 87 bpm. 
 
-The residual standard error is about 6.424; this is an approximation of how much the residuas tend to deviate around the regression line.
+There is  an approximation of 8.817 the residuas tend to deviate around the regression line.
 
-The coefficient of determination is about 0.14; approximately 14% of the variability in the heart rate variable is explained by the tempreture variable.
+However, only approximately 7% of the variability in the heart rate variable is explained by the tempreture variable.
 
-The intercept is extremely significant and the slope p value is 0.05, it is sifnificant correlated between the tempreture and heart rate under 95% condifence level.
-So the overall model is significant but the quality of the model is poor as only 14% variability in the heart rate variable is explained by the tempreture variable.
+The intercept is extremely significant, while the slop p value is larger than 5% significant level, 
+So the overall model is not significant.
 
-
-We can check the model assumption by Q-Q plot to see if the data are normal distributed.
+We can further check the model assumption by Q-Q plot to see if the data are normal distributed.
 ```{r normalitycheck, echo=TRUE}
 qqnorm(slm_model$residuals)
 qqline(slm_model$residuals)
 ```
 
+It seemes that the data are not follow normal distribution, which violte the the **Normality** assumption. 
 
 
 ### Multiple Linear Regression Model
