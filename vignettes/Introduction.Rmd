@@ -176,11 +176,10 @@ Since the p-value is larger than the 0.05 significant level, we fail to reject t
 
 ## Correlation Matrix Plot 
 
-In the dataset, the weight , SleepDuration, Tempreture, Activity and Heart Rate are continues variables. So we can do a multiple correlation analysis on those continues variables to check the pair relationship. We can use the function *paircorr* in "sha" package to calculate all the pair correlation among all the continues variable as *paircorr* will automatically detect the continues variables and visulize the results in a plot. (see below)
+In the dataset, the weight , SleepDuration, Tempreture, Activity and Heart Rate are continues variables. So we can do a multiple correlation analysis on those continues variables to check the pair relationship. We can use the function *cor_plot* in "sha" package to calculate all the pair correlation among all the continues variable as *cor_plot* will automatically detect the continues variables and visulize the results in a plot. (see below)
 
-```{r corrplot, echo=TRUE, message=FALSE}
-library(corrplot)
-corrplot(paircorr(mydata), method = "number",tl.srt = 45)
+```{r corrplot, echo=TRUE}
+cor_plot(mydata)
 ```
 
 

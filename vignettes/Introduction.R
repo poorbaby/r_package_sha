@@ -76,9 +76,8 @@ summary(aov(SleepDuration ~ DayType, data = mydata ))
 ## ----anova_test2, echo=TRUE----------------------------------------------
 summary(aov(SleepDuration ~ Weather, data = mydata))
 
-## ----corrplot, echo=TRUE, message=FALSE----------------------------------
-library(corrplot)
-corrplot(paircorr(mydata), method = "number",tl.srt = 45)
+## ----corrplot, echo=TRUE-------------------------------------------------
+cor_plot(mydata)
 
 ## ----corrleration2, echo=TRUE, results='asis'----------------------------
 ans <- mydata %>% 
