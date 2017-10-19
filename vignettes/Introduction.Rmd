@@ -174,14 +174,14 @@ summary(aov(SleepDuration ~ Weather, data = mydata))
 ```
 Since the p-value is larger than the 0.05 significant level, we fail to reject the null hypotheis that the mean of sleep duration on different weather conditions are equal. So there is no significant differences on average sleep duration accross different weather conditions under given data and evidence , with 95 % confidence. 
 
-## Correlation Matrix
+## Correlation Matrix Plot 
 
-In the dataset, the weight , SleepDuration, Tempreture, Activity and Heart Rate are continues variables. So we can do a multiple correlation analysis on those continues variables to check the pair relationship. So we can use the function *paircorr* in "sha" package to calculate all the pair correlation among all the continues variable as *paircorr* will automatically detect the continues variables and give you the results. 
+In the dataset, the weight , SleepDuration, Tempreture, Activity and Heart Rate are continues variables. So we can do a multiple correlation analysis on those continues variables to check the pair relationship. We can use the function *paircorr* in "sha" package to calculate all the pair correlation among all the continues variable as *paircorr* will automatically detect the continues variables and visulize the results in a plot. (see below)
 
-```{r paircorr1, echo=TRUE, results='asis'}
-knitr::kable(paircorr(mydata), format = "markdown", align = "l", padding = 2 )
+```{r corrplot, echo=TRUE, message=FALSE}
+library(corrplot)
+corrplot(paircorr(mydata), method = "number",tl.srt = 45)
 ```
-
 
 
 Additionaly, we can use **tidyverse** library to calculate the correlation between two continues variables by set more condtions. For example, we are interested in the correlation between the sleep duration and the tempreture separately for each day type only for Sunny weather condition, and return a sorted list of those correlation coeffients rounded to two digits. 

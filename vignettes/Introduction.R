@@ -76,8 +76,9 @@ summary(aov(SleepDuration ~ DayType, data = mydata ))
 ## ----anova_test2, echo=TRUE----------------------------------------------
 summary(aov(SleepDuration ~ Weather, data = mydata))
 
-## ----paircorr1, echo=TRUE, results='asis'--------------------------------
-knitr::kable(paircorr(mydata), format = "markdown", align = "l", padding = 2 )
+## ----corrplot, echo=TRUE, message=FALSE----------------------------------
+library(corrplot)
+corrplot(paircorr(mydata), method = "number",tl.srt = 45)
 
 ## ----corrleration2, echo=TRUE, results='asis'----------------------------
 ans <- mydata %>% 
