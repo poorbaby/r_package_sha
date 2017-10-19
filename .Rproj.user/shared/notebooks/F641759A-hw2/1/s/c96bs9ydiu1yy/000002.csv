@@ -1,5 +1,0 @@
-"0","model.t = lm(log(sleepdata$bodywt)~sleepdata$sleep_total)"
-"0","plot(sleepdata$sleep_total,log(sleepdata$bodywt),"
-"0","     xlab = ""sleep total(hour) "", "
-"0","     ylab = ""Log Body Weight (kg)"","
-"0","     main = "" Log Transformed Body weight asscociation with Sleep Total"")"
