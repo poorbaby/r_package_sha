@@ -27,17 +27,17 @@ no_of_col <- dim(mydata)[2]
 var_names <- colnames(mydata)
 ```
 
-The collected  dataset contains 8 variables related to one individual's sleep and health data and recoded each observation daily. 
+The collected  dataset contains `r no_of_col` variables related to one individual's sleep and health data and recoded each observation daily. 
 The following is the variable explanation:
 
-1. Date: in format of month/date/year started from Sep.11 2017
-2. DayofWeek: the name of the day during a week (Mon,Tue,Wed,Thu,Fri,Sat,Sun)
-3. Weight: body weight in kg
-4. SleepDuration: total sleep time per night measured in hour
-5. Weather: daily condition of the weather (Sunny, Cloudy, Rainy, Snowy)
-6. Tempreture: daily average tempreture in Celsius
-7. Activity: ActivitybySteps: a measurement of activity in steps
-8. HeartRate: heart rate in beats per minute (bpm)
+1. `r var_names[1]`: in format of month/date/year started from Sep.11 2017
+2. `r var_names[2]`: the name of the day during a week (Mon,Tue,Wed,Thu,Fri,Sat,Sun)
+3. `r var_names[3]`: body weight in kg
+4. `r var_names[4]`: total sleep time per night measured in hour
+5. `r var_names[5]`: daily condition of the weather (Sunny, Cloudy, Rainy, Snowy)
+6. `r var_names[6]`: daily average tempreture in Celsius
+7. `r var_names[7]`: ActivitybySteps: a measurement of activity in steps
+8. `r var_names[8]`: heart rate in beats per minute (bpm)
 
 
 # Data Cleaning
@@ -69,19 +69,18 @@ Here, we are going to use "tidyverse" library to manupilate the "mydata" dataset
 ```{r count, echo=TRUE }
 n <- mydata %>%
   summarize(n = n())
-n
 ```
 
-The above code give us the number of observations of a dataset. There are 38 observations in the *mydata* dataset
+The above code give us the number of observations of a dataset. There are `r n` observations in the *mydata* dataset
 We can also  get the number of observations in specfic conditions. For example, we are going to check how many observations are there that Sleep duration are over 8 hours and the tempreture is over 20.
 
 ```{r count2, echo=TRUE }
 count2 <- mydata %>% 
   filter(SleepDuration > 8 & Tempreture > 20) %>% 
   summarize(n = n())
-count2
+
 ```
-So there are 9 days that sleep duration over 8 hours and the tempreture are above 20. 
+So there are `r count2` days that sleep duration over 8 hours and the tempreture are above 20. 
 
 We are going to find out the average sleep duration on weekday and on weekend and arrange them to see which group has longer sleep duration.
 ```{r sleep_by_day, echo=TRUE, results= 'asis'}
@@ -109,7 +108,7 @@ knitr::kable(avg_sleep_weather, format = "markdown", align = 'l')
 
 ```
 
-So from the above table, we will see that sleep duration of Sunny weather has the longest with 8.37 hour on average , followed by Cloudy and Rainy weather condition, with 7.47 hour,7.44 hour respectively. 
+So from the above table, we will see that sleep duration of Sunny weather has the longest with `r avg_sleep_weather$avg_sleep[1]` hour on average , followed by Cloudy and Rainy weather condition, with `r avg_sleep_weather$avg_sleep[2]` hour,`r avg_sleep_weather$avg_sleep[3]`hour respectively. 
 
 
 ### Import the package *sha*
@@ -210,7 +209,7 @@ modelplot(mydata, x = "Tempreture", y="HeartRate")
 
 The equation of the above linear model can be constructed from the output:
 
-**Predicted Heart Rate  = 87.5465 + -0.5328 * Tempreture**
+**Predicted Heart Rate  = ** `r round(coef(slm_model)[1], 4)` **+ (**`r round(coef(slm_model)[2],4)`**) * Tempreture**
 
 The interpretation for the slope coefficient: With a unit celsius increase in tempreture,the heart rate, on average, decrease by approximately 0.5 bpm.
 
