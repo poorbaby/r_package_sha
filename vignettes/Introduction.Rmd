@@ -2,7 +2,7 @@
 title: "Intro to Sha Package for Sleep and Health Analysis"
 author: "Yunrou Gong"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_document
+output: html_document
 
 vignette: >
   %\VignetteIndexEntry{Sleep and Health Analysis with Sha}
