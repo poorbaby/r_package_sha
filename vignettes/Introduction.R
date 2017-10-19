@@ -6,6 +6,10 @@ mydata <- gs_read(googlekey, skip = 3)
 ## ----data_view, echo=TRUE, results='asis'--------------------------------
 knitr::kable(head(mydata), format = "markdown", align = 'c')
 
+## ----str_data, echo= FALSE, include= FALSE-------------------------------
+no_of_col <- dim(mydata)[2]
+var_names <- colnames(mydata)
+
 ## ----dataclean01, echo=TRUE, message=FALSE-------------------------------
 library(tidyverse)
 mydata <- mydata %>% 
@@ -18,16 +22,15 @@ sch <- c("Date", "Weight(kg)", "SleepDuration(hr)", "Weatehr", "Tempreture(c)", 
 knitr::kable(head(mydata, 10), col.names = sch, align = "c")
 
 
-## ----count, echo=TRUE, results='asis'------------------------------------
+## ----count, echo=TRUE----------------------------------------------------
 n <- mydata %>%
   summarize(n = n())
-knitr::kable(n, format = "markdown", align = 'l')
 
-## ----count2, echo=TRUE, results='asis'-----------------------------------
+## ----count2, echo=TRUE---------------------------------------------------
 count2 <- mydata %>% 
   filter(SleepDuration > 8 & Tempreture > 20) %>% 
   summarize(n = n())
-knitr::kable(count2, format = "markdown", align = 'l')
+
 
 ## ----sleep_by_day, echo=TRUE, results= 'asis'----------------------------
 sleep_by_day <- mydata %>% 
@@ -55,7 +58,6 @@ library(sha)
 ## ----as.factor, echo=TRUE------------------------------------------------
 mydata$DayType <- as.factor(mydata$DayType)
 mydata$Weather <- as.factor(mydata$Weather)
-str(mydata)
 
 ## ----scatterplot, echo= TRUE---------------------------------------------
 plot_scatter(mydata,"Weight","SleepDuration", "DayType")
@@ -97,15 +99,18 @@ qqnorm(slm_model$residuals)
 qqline(slm_model$residuals)
 
 ## ----scattermatrix, echo=TRUE--------------------------------------------
-plot(mydata %>% select(SleepDuration, Weight, Tempreture, Activity, HeartRate))
+par(ps = 12, cex = 1, cex.main = 1)
+plot(mydata %>% select(SleepDuration, Weight, Tempreture, Activity, HeartRate), pch=16, col="blue", main="Matrix Scatterplot of SleepDuration, Weight, Tempreture, Activity and HeartRate")
 
 ## ----ml01, echo=TRUE-----------------------------------------------------
 ml.saturated = lm(SleepDuration ~ Weight + Tempreture + Activity + HeartRate +  DayType, 
                   data= mydata)
-summary(ml.saturated)
+mlr_sum <- summary(ml.saturated)
+
+knitr::kable(mlr_sum $coef, digits = c(4, 4, 3, 4), format = 'markdown')
 
 ## ----assumption_check, echo= TRUE----------------------------------------
-plot(ml.saturated)
+plot(ml.saturated, which = c(1,2))
 
 ## ----info, echo= T-------------------------------------------------------
 sessionInfo()
