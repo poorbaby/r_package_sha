@@ -12,7 +12,7 @@ paircorr(data, digits = 2)
 \item{digits}{the correlation value round to the given digits, by default the digits equal to 2}
 }
 \value{
-a matrix
+a plot
 }
 \description{
 To calculate all the correlation between two continues variable in a given dataset.
