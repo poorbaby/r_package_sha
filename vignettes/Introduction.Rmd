@@ -1,5 +1,5 @@
 ---
-title: "Intro to Sha Package for Sleep and Health Analysis"
+title: "Intro to hla Package for Sleep and Health Analysis"
 author: "Yunrou Gong"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_document
@@ -10,7 +10,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 # Introduction
-The *sha* package is used for analysing sleep duration and other atrributes related to health. The name **Sha**  is the abbreviation of Sleep Health Analysis. We may have curious about weather sleep duration will be influenced by the weight, tempreture, activities, day of the week, and heart rate. Intuitively, sleep time and the other attributes are not that correlated. But, we could use this package to conduct detail analysis to answer intereting questions, which may be counter intuitive. 
+The *hla* package is used for analysing sleep duration and other atrributes related to life health. The name **hla**  is the abbreviation of Health and Life Analysis. We may have curious about weather sleep duration will be influenced by the weight, tempreture, activities, day of the week, and heart rate. Intuitively, sleep time and the other attributes are not that correlated. But, we could use this package to conduct detail analysis to answer intereting questions, which may be counter intuitive. Additionaly, I also wonder wheather having dog or not will affect the other features. Basicly, the activities will increase correspondingly by having a dog as you will have to do dog walk at least once a day. We can also conduct some interesting analysis to see how your pet will influence on your life, such as sleeping duration, body weight. 
 
 # Description of Original Dataset 
 In order to show you how to use *sha* package to do intereting analysis on sleep and health data, I collected my own data via google sheet. I made it published so you can fetch this dataset via "googlesheets" package. 
