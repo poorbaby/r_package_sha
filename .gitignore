@@ -9,3 +9,4 @@ inst/doc
 .Rhistory
 ./vignettes/.gitignore
 
+.Rproj.user
