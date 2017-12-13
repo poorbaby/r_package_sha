@@ -1,2 +1,2 @@
 # r_package
-My first R Package for health and life analysis 
+My first R Package for sleep and health analysis 
