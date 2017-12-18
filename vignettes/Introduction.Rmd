@@ -300,9 +300,12 @@ According to the Q-Q plots, we will see that the data are follow the normal dist
 From the above study analysis on my collected sleep and health dataset, we would conclude that the sleep time per day has little association with my body weight, tempreture and heart rate. While the average sleep duration has negative linear relationship with activity by steps. There is significant difference on average sleep duration between having a dog or not. So does the day type. The analysis tells me that my sleep duration in weekend is larger than that in weekday; having a dog will increase my sleep duration as well. Additionally, my body weight has negative relationship with tempreture; it has positive relationship with heart rate and acitivity by steps. Tempreture and heart rate also has negative realtionship, which means the tempreture getting lower, my heart rate will increase. Last, my body weight and activity by steps are positivie associated, whcih I found is very counter intuitive.  
 
 # Limitation 
-What	have	you	learned? What	are	some	limitations	of	your	analysis?	If	you	
-could	do	the	whole	thing	over,	what	would	you	do	differently? What would	
-you	consider	doing	next?
+My whole analysis try to answer the question of does other health attribute will affect my sleep. I use the bed time represent my daily sleep as estimator. And I also collect the other data using as health attribute's estimators. In the later part of the research, I added a new feature about the pet condition. But the problem is I only use having dog or not as the estimator to represent the pet condition, which is biased or not good to represent as population interets. Another problem is the sleep time I use iphone app to record, which is not that accurate, as I did not fall asleep immediately. So how to define the sleep time. Or maybe I also should consider to normalise the data by make it as a propotion of 24 hour.To check how the propotion of daily sleep time vary among the other attributes. The validity problem of the data also happend on the activity. I use iphone to record my walking steps. But sometimes, I may forget to bring the iphone with me when I go to walk, so it may lead to outlier values. 
+
+If I could do it again, I may consider to record the following attribute:  the time I go to bed; the time I wake up; the time I am in deep sleep; generate a variable to measure my sleep quality.
+
+I may consider to record my puppy information as well to see how pet will affect my life, such as dog body weight, the time of dog walking, the brand of food she is taking and how much did she eat per day. 
+
 
 ```{r info, echo= T}
 sessionInfo()

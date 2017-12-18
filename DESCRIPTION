@@ -1,7 +1,7 @@
 Package: sha
 Type: Package
 Title: Sleep and Health Data Analysis
-Version: 1.0.11
+Version: 1.0.12
 Author: Yunrou Gong
 Maintainer: Yunrou Gong <gongyunrou@gmail.com>
 Description: This package is used for analysing sleep duration and other atrributes related to life health.
