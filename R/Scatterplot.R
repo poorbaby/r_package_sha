@@ -8,9 +8,9 @@
 #' @export
 #' @import ggplot2
 #' @examples
-#' plot_scatter(sleepdurationDay,"Weight","SleepDuration","DayType")
+#' plot_scatter(sleepdata,"Weight","SleepDuration","DayType")
 plot_scatter <- function(data,x,y,color){
-  sch <- c("Date", "Weight(kg)", "Sleep Duration(hr)", "Tempreture(°C)", "Activity(steps)",
+  sch <- c("Date", "Weight(kg)", "Sleep Duration(hr)", "Tempreture(C)", "Activity(steps)",
            "Heart Rate(bpm)","Having Dog", "Day Type")
   lookup <- cbind.data.frame(name_unit=sch, origin_name=colnames(data))
   s <- ggplot2::ggplot(data, ggplot2::aes(

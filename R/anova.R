@@ -11,7 +11,7 @@
 #' @export
 #' @importFrom stats aov
 #' @examples
-#' aov_t(sleepdurationDay,"SleepDuration", "DayType")
+#' aov_t(sleepdata,"SleepDuration", "DayType")
 aov_t <- function(data, x, y) {
   summary(aov(data[[x]] ~ data[[y]]))
 }

@@ -20,5 +20,5 @@ a summary of anova test
 To check weather there is statistically significantly difference across the groups.
 }
 \examples{
-aov_t(sleepdurationDay,"SleepDuration", "DayType")
+aov_t(sleepdata,"SleepDuration", "DayType")
 }

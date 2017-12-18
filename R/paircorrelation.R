@@ -8,7 +8,7 @@
 #' @importFrom stats cor
 #' @import corrplot
 #' @examples
-#' paircorr(sleepduration)
+#' cor_plot(sleepdata)
 cor_plot <- function(data, digits = 2) {
   con_var <- character()
   for (i in colnames(data)) {

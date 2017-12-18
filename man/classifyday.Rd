@@ -22,6 +22,6 @@ a vector
 Classfify the variable by type "weekday" and  "weekend"
 }
 \examples{
-classifyday(sleepduration,"DayofWeek")
+classifyday(sleepdata,"DayofWeek")
 
 }

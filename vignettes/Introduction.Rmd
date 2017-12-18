@@ -299,7 +299,10 @@ According to the Q-Q plots, we will see that the data are follow the normal dist
 
 From the above study analysis on my collected sleep and health dataset, we would conclude that the sleep time per day has little association with my body weight, tempreture and heart rate. While the average sleep duration has negative linear relationship with activity by steps. There is significant difference on average sleep duration between having a dog or not. So does the day type. The analysis tells me that my sleep duration in weekend is larger than that in weekday; having a dog will increase my sleep duration as well. Additionally, my body weight has negative relationship with tempreture; it has positive relationship with heart rate and acitivity by steps. Tempreture and heart rate also has negative realtionship, which means the tempreture getting lower, my heart rate will increase. Last, my body weight and activity by steps are positivie associated, whcih I found is very counter intuitive.  
 
-
+# Limitation 
+What	have	you	learned? What	are	some	limitations	of	your	analysis?	If	you	
+could	do	the	whole	thing	over,	what	would	you	do	differently? What would	
+you	consider	doing	next?
 
 ```{r info, echo= T}
 sessionInfo()

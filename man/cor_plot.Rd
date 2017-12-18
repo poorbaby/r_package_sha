@@ -18,5 +18,5 @@ a plot
 To calculate and visualize all the correlation between two continues variable in a given dataset.
 }
 \examples{
-paircorr(sleepduration)
+cor_plot(sleepdata)
 }

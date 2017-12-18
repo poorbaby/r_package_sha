@@ -10,11 +10,11 @@
 #' @importFrom stats lm coef
 #' @seealso \code{\link{log_modelplot}}
 #' @examples
-#' modelplot(sleepduration,"Tempreture", "SleepDuration")
+#' modelplot(sleepdata,"Tempreture", "SleepDuration")
 #'
 modelplot <- function(data,x,y){
   model = lm(data[[y]]~data[[x]])
-  sch <- c("Date", "Weight(kg)", "Sleep Duration(hr)", "Tempreture(°C)", "Activity(steps)",
+  sch <- c("Date", "Weight(kg)", "Sleep Duration(hr)", "Tempreture(C)", "Activity(steps)",
            "Heart Rate(bpm)","Having Dog", "Day Type")
   lookup <- cbind.data.frame(name_unit=sch, origin_name=colnames(data))
   plot(data[[x]],data[[y]],

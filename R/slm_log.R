@@ -15,7 +15,7 @@
 #' @seealso \code{\link{slm_s}}
 #'
 #' @examples
-#' slm_log(sleepduration, "Tempreture", "SleepDuration")
+#' slm_log(sleepdata, "Tempreture", "SleepDuration")
 #'
 #'
 slm_log <- function(data, x, y){

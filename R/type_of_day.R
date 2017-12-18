@@ -8,7 +8,7 @@
 #' @return a vector
 #' @export
 #' @examples
-#' classifyday(sleepduration,"DayofWeek")
+#' classifyday(sleepdata,"DayofWeek")
 #'
 classifyday <- function(df,x,v1= "weekday",v2="weekend") {
   tem<- ifelse( df[[x]] %in% c( "Mon","Tue", "Wed", "Thu","Fri"), v1, v2)

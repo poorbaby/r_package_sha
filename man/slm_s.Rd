@@ -20,7 +20,7 @@ summary of the model
 This is a function to conduct simple linear regression model on two continues variable
 }
 \examples{
-slm_s(sleepduration, "Tempreture", "SleepDuration")
+slm_s(sleepdata, "Tempreture", "SleepDuration")
 }
 \seealso{
 \code{\link{slm_log}}

@@ -22,5 +22,5 @@ a plot
 Scatter Plot by Group
 }
 \examples{
-plot_scatter(sleepdurationDay,"Weight","SleepDuration","DayType")
+plot_scatter(sleepdata,"Weight","SleepDuration","DayType")
 }

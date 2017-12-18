@@ -20,6 +20,6 @@ a plot
 Box Plot by Group
 }
 \examples{
-plot_box(sleepdurationDay, x = "DayType", y= "SleepDuration")
+plot_box(sleepdata, x = "DayType", y= "SleepDuration")
 
 }

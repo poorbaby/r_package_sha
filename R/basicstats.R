@@ -9,12 +9,12 @@
 #'
 #' @examples
 #' ## Continues variable stats
-#' basic_stats(sleepdurationDay, "Weight", "DayType", max)
-#' basic_stats(sleepdurationDay, "Weight", "DayType", mean)
-#' basic_stats(sleepdurationDay, "Weight", "DayType", median)
+#' basic_stats(sleepdata, "Weight", "DayType", max)
+#' basic_stats(sleepdata, "Weight", "DayType", mean)
+#' basic_stats(sleepdata, "Weight", "DayType", median)
 #'
 #' ## Categorical variable stats
-#' basic_stats(sleepdurationDay, "Weather", "DayType", table)
+#' basic_stats(sleepdata, "HavingDog", "DayType", table)
 #'
 basic_stats <- function(data, x, y, f){
   by(data[[x]], data[[y]], f)

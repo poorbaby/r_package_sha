@@ -20,7 +20,7 @@ a plot
 Simple Linear Regression Model Plot(Log transformed)
 }
 \examples{
-log_modelplot(sleepduration,"Tempreture", "SleepDuration")
+log_modelplot(sleepdata,"Tempreture", "SleepDuration")
 
 }
 \seealso{
