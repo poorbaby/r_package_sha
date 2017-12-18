@@ -19,7 +19,7 @@ modelplot <- function(data,x,y){
        ylab = y,
        main = paste(y,"association with", x))
   abline(model, lty = 2, col = "red")
-  eq <- paste("Predicted", y, "=", round(coef(model)[1], 4), "+ (", round(coef(model)[2], 4), ") *", x )
-  mtext(eq, 3, line=-2, col = "Brown")
+  slope <- paste("Slope = ", round(coef(model)[2], 2))
+  mtext(slope, 3, line=-2, col = "Blue")
 }
 
