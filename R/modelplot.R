@@ -14,9 +14,12 @@
 #'
 modelplot <- function(data,x,y){
   model = lm(data[[y]]~data[[x]])
+  sch <- c("Date", "Weight(kg)", "Sleep Duration(hr)", "Tempreture(°C)", "Activity(steps)",
+           "Heart Rate(bpm)","Having Dog", "Day Type")
+  lookup <- cbind.data.frame(name_unit=sch, origin_name=colnames(data))
   plot(data[[x]],data[[y]],
-       xlab = x,
-       ylab = y,
+       xlab = lookup$name_unit[lookup$origin_name==x],
+       ylab = lookup$name_unit[lookup$origin_name==y],
        main = paste(y,"association with", x))
   abline(model, lty = 2, col = "red")
   slope <- paste("Slope = ", round(coef(model)[2], 2))

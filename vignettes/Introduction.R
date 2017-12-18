@@ -18,8 +18,8 @@ mydata <- mydata %>%
 
 ## ----schema, echo=TRUE, results='asis'-----------------------------------
 #assign the variable name with units of measurement
-sch <- c("Date", "Weight(kg)", "SleepDuration(hr)", "Tempreture(°C)", "Activity(steps)", 
-         "HeartRate(bpm)","HavingDog", "DayType")
+sch <- c("Date", "Weight(kg)", "Sleep Duration(hr)", "Tempreture(°C)", "Activity(steps)", 
+         "Heart Rate(bpm)","Having Dog", "Day Type")
 knitr::kable(head(mydata, 10), col.names = sch, align = "c")
 
 
@@ -45,10 +45,6 @@ sleep_by_day <- mydata %>%
   mutate(avg_sleep = round (avg_sleep, 2)) %>% 
   arrange(desc(avg_sleep))
 
-knitr::kable(sleep_by_day, format = "markdown", align = 'l')
-
-weekend_sd <- sleep_by_day$avg_sleep[1]
-weekday_sd <- sleep_by_day$avg_sleep[0]
 
 ## ----sha, echo=TRUE, message=FALSE---------------------------------------
 # Import the package *sha*
@@ -63,11 +59,11 @@ mydata$HavingDog <- as.factor(mydata$HavingDog)
 
 
 ## ----scatterplot, echo= TRUE---------------------------------------------
-plot_scatter(data = mydata,x = "Weight",y = "SleepDuration", color = "DayType")
+plot_scatter(data = mydata,x = "Activity",y = "SleepDuration", color = "HavingDog")
 
 
 ## ----scatterplot2, echo=TRUE---------------------------------------------
-plot_scatter(data = mydata,x = "Activity",y = "SleepDuration", color = "DayType")
+plot_scatter(data = mydata,x = "Weight",y = "HeartRate", color = "DayType")
 
 ## ----anova_test, echo=TRUE-----------------------------------------------
 summary(aov(SleepDuration ~ DayType, data = mydata ))
@@ -81,9 +77,6 @@ summary(aov(Activity~ HavingDog, data = mydata))
 
 ## ----corrplot, echo=TRUE-------------------------------------------------
 cor_plot(mydata)
-
-## ---- echo=TRUE,results='asis'-------------------------------------------
-cor.test(mydata$Weight,mydata$Activity)
 
 ## ----corrleration2, echo=TRUE, results='asis'----------------------------
 ans <- mydata %>% 
@@ -105,12 +98,30 @@ modelplot(mydata, x = "Tempreture", y="HeartRate")
 qqnorm(slm_model$residuals)
 qqline(slm_model$residuals)
 
-## ----scattermatrix, echo=TRUE--------------------------------------------
+## ---- echo=TRUE----------------------------------------------------------
+panel.cor <- function(x, y, digits = 2, cex.cor, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  # correlation coefficient
+  r <- cor(x, y)
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste("r= ", txt, sep = "")
+  text(0.5, 0.6, txt)
+
+  # p-value calculation
+  p <- cor.test(x, y)$p.value
+  txt2 <- format(c(p, 0.123456789), digits = digits)[1]
+  txt2 <- paste("p= ", txt2, sep = "")
+  if(p<0.05) txt2 <- paste("p= ", "<0.05", sep = "")
+  text(0.5, 0.4, txt2)
+}
 par(ps = 12, cex = 1, cex.main = 1)
-plot(mydata %>% select(SleepDuration, Weight, Tempreture, Activity, HeartRate), pch=16, col="blue", main="Matrix Scatterplot of SleepDuration, Weight, Tempreture, Activity and HeartRate")
+pairs(mydata %>% select(SleepDuration, Weight, Tempreture, Activity, HeartRate), upper.panel = panel.cor,
+      pch=16, col="blue", main="Matrix Scatterplot of SleepDuration, Weight, Tempreture, Activity and HeartRate", labels = c("Sleep Duration(hr)","Weight(kg)","Tempreture(°C)","Activity(steps)","Heart Rate(bpm)"))
 
 ## ----ml01, echo=TRUE-----------------------------------------------------
-ml.saturated = lm(SleepDuration ~ Weight + Tempreture + Activity + HeartRate +  DayType + HavingDog, 
+ml.saturated = lm(SleepDuration ~  Weight + Tempreture + HeartRate + Activity + DayType + HavingDog, 
                   data= mydata)
 mlr_sum <- summary(ml.saturated)
 mlr_sum
@@ -121,4 +132,5 @@ plot(ml.saturated, which = c(1,2))
 
 ## ----info, echo= T-------------------------------------------------------
 sessionInfo()
+
 

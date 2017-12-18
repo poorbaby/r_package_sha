@@ -10,7 +10,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 # Introduction
-The *Sha* package is used for analysing sleep duration and other atrributes related to life health. The name **Sha**  is the abbreviation of Sleep and Health Analysis. We may have curious about weather sleep duration will be influenced by the weight, tempreture, activities, day of the week, and heart rate. Intuitively, sleep time and the other attributes are not that correlated. But, we could use this package to conduct detail analysis to answer intereting questions, which may be counter intuitive. Additionaly, I also wonder wheather having pet or not will affect the other features. Basicly, the activities will increase correspondingly by having a dog as you will have to do dog walking at least once a day. We can also conduct some interesting analysis to see how your pet will influence on your life, such as sleeping duration, body weight. 
+The *Sha* package is used for analysing sleep duration and other atrributes related to life health. The name **Sha**  is the abbreviation of Sleep and Health Analysis. We may have curious about weather sleep duration will be influenced by the weight, tempreture, activities, day of the week, and heart rate. Intuitively, sleep time and the other attributes are not that correlated. But, we could use this package to conduct detail analysis to answer intereting questions, which may be counter intuitive. Additionally, I also wonder wheather having pet or not will affect the other features. Basicly, the activities will increase correspondingly by having a dog as you will have to do dog walking at least once a day. We can also conduct some interesting analysis to see how your pet will influence on your life, such as sleeping duration, body weight. 
 
 # Description of Original Dataset 
 In order to discover the attributes that may have some associate with our personal sleep time, I choose to collect of health data of myself via 'googlesheets', which I made it published so you can fetch this dataset via "googlesheets" package. I believe that the attributes set well represent my interets on the research question. The measurement of the attributes are also important, which will be detail mentioned below. 
@@ -34,7 +34,7 @@ The following is the variable explanation and how I measure them:
 2. `r var_names[2]`: the name of the day during a week (Mon,Tue,Wed,Thu,Fri,Sat,Sun)
 3. `r var_names[3]`: body weight in kg measured at erery morning when wake up using the same weighing machine
 4. `r var_names[4]`: total sleep time (hour) per night measured by "Sleep Cycle"" app on iphone
-5. `r var_names[5]`: daily average tempreture in Celsius from website https://www.wunderground.com/history/airport/KROC/2013/12/17/MonthlyHistory.html?&reqdb.zip=&reqdb.magic=&reqdb.wmo=
+5. `r var_names[5]`: daily average tempreture in Celsius from website https://www.wunderground.com/history/airport/KROC/2013/12/17/MonthlyHistory.html
 6. `r var_names[6]`: a measurement of activity in steps via iphone 'health' app
 7. `r var_names[7]`: heart rate in beats per minute (bpm) measured every morning when wake up via "Sleep Cycle"" app on iphone
 8. `r var_names[8]`: weather you have dog or not 
@@ -52,12 +52,11 @@ mydata <- mydata %>%
 
 ```{r schema, echo=TRUE, results='asis'}
 #assign the variable name with units of measurement
-sch <- c("Date", "Weight(kg)", "SleepDuration(hr)", "Tempreture(°C)", "Activity(steps)", 
-         "HeartRate(bpm)","HavingDog", "DayType")
+sch <- c("Date", "Weight(kg)", "Sleep Duration(hr)", "Tempreture(°C)", "Activity(steps)", 
+         "Heart Rate(bpm)","Having Dog", "Day Type")
 knitr::kable(head(mydata, 10), col.names = sch, align = "c")
 
 ```
-
 Now, the following analysis are based on this dataset which is named as mydata. 
 
 # Explotory Data Analysis
@@ -92,28 +91,24 @@ sleep_by_day <- mydata %>%
   mutate(avg_sleep = round (avg_sleep, 2)) %>% 
   arrange(desc(avg_sleep))
 
-knitr::kable(sleep_by_day, format = "markdown", align = 'l')
-
-weekend_sd <- sleep_by_day$avg_sleep[1]
-weekday_sd <- sleep_by_day$avg_sleep[0]
 ```
-The average of sleep duration per day in weekend is ` r weekend_sd` hour, which is longer than the weekday sleep time on average, which is `r weekday_sd` hour based on our existing data.  It sounds very natually as I had no classes on weekend, so I may get up late. 
+The average of sleep duration per day in weekend is `r sleep_by_day$avg_sleep[1]` hour, which is longer than the weekday sleep time on average, which is `r sleep_by_day$avg_sleep[2]` hour based on our existing data.  It sounds very natually as I had no classes on weekend, so I may get up late. 
 
 ```{r sha, echo=TRUE, message=FALSE}
 # Import the package *sha*
 library(sha)
 ```
 
-## Box plot 
+### Box plot 
 We could also make box plot to visulise the differences of sleep duration between weekday and weekend by using  *plot_box* function. It will also show you how disperse the data is distributed , how skew the distribution may be, and also tell you the outliers in the dataset. 
 
 ```{r boxplot, echo=TRUE}
 plot_box(mydata, x = "DayType", y= "SleepDuration")
 ```
+From the above boxplot, it tell us that the average sleep time by day in weekday is less than that in weekend, and there is one outlier in weekend group. I will not remove this outlier from the dataset, as I think this value represent my sleep pattern in some days. 
 
 
-
-To make the catergorical variable to factor variable for following analysis. 
+To make the catergorical variables as factor variables for following analysis. 
 ```{r as.factor, echo=TRUE}
 mydata$DayType <- as.factor(mydata$DayType)
 mydata$HavingDog <- as.factor(mydata$HavingDog)
@@ -123,9 +118,9 @@ mydata$HavingDog <- as.factor(mydata$HavingDog)
 
 ## Scatter plot
 You can use *plot_scatter* function to make scatter plot on two continue variables by group to check if they have linear relationship and how does the relationship accross differnty groups. 
-The below graph shows us the relationship between seelp duration and weight. It seems that there is some negative correlation  between sleep duration and body weight. 
+The below graph shows us the relationship between seelp duration and activity level group by pet condition. It seems that there is very strong negative correlation between sleep duration and avtivity when I did not have a dog. Once I have dog, it seems there is no assosiation between my sleep time and activities. It is interesting as it shows that my activity steps has no linear relationship with sleep duration after I have a dog. Maybe because I have to do dog walking in the morning which make my sleep duration less variation. 
 ```{r scatterplot, echo= TRUE}
-plot_scatter(data = mydata,x = "Weight",y = "SleepDuration", color = "DayType")
+plot_scatter(data = mydata,x = "Activity",y = "SleepDuration", color = "HavingDog")
 
 ```
 
@@ -133,10 +128,10 @@ Here is another example for looking at the relationship between activity steps a
 You can use the *plot_scatter* function to make the plots on any two of the continue variables in the dataset, and grouped by a categorical vatiable. 
 
 ```{r scatterplot2, echo=TRUE}
-plot_scatter(data = mydata,x = "Activity",y = "SleepDuration", color = "DayType")
+plot_scatter(data = mydata,x = "Weight",y = "HeartRate", color = "DayType")
 ```
 
-From the above scatter plot, it seems that there is linear relationship between sleep duration and activity. And the slopes of weekday and weekend is very similar. 
+From the above scatter plot, it seems that there is a positive linear relationship between weight and heart rate. And the slopes of weekday and weekend is very similar. 
 
 
 ### Checking statistically significantly mean difference across the groups
@@ -179,14 +174,8 @@ In the dataset, the weight , SleepDuration, Tempreture, Activity and Heart Rate 
 cor_plot(mydata)
 ```
 
-From the above results, it is really interesting. The correlation between 
 
-```{r, echo=TRUE,results='asis'}
-cor.test(mydata$Weight,mydata$Activity)
-```
-
-
-Additionaly, we can use **tidyverse** library to calculate the correlation between two continues variables by set more condtions. For example, we are interested in the correlation between the sleep duration and the tempreture separately for each day type only for having a dog condition, and return a sorted list of those correlation coeffients rounded to two digits. 
+Additionally, we can use **tidyverse** library to calculate the correlation between two continues variables by set more condtions. For example, we are interested in the correlation between the sleep duration and the tempreture separately for each day type only for having a dog condition, and return a sorted list of those correlation coeffients rounded to two digits. 
 ```{r corrleration2, echo=TRUE, results='asis'}
 ans <- mydata %>% 
   filter(HavingDog == "Yes") %>% 
@@ -198,8 +187,7 @@ ans <- mydata %>%
 knitr::kable(ans, format = "markdown", align = "l")  
 ```
 
-So the results is quite interesting as there is positive correlation between sleep duration and tempreture on weekend and there is negative correlation between them on weekday when I have a dog. 
-
+So the results is quite interesting as there is positive correlation between sleep duration and tempreture on weekend and there is negative correlation between them on weekday when I have a dog. However, both of the correlation coefficent are close to zero. So such association may not siginificant exist. 
 
 
 # Modelling 
@@ -239,18 +227,37 @@ It seemes that the data are not follow normal distribution, which violte the the
 
 ### Multiple Linear Regression Model
 Create a scatter matrix plot on all the continues variables. 
-```{r scattermatrix, echo=TRUE}
+```{r, echo=TRUE}
+panel.cor <- function(x, y, digits = 2, cex.cor, ...)
+{
+  usr <- par("usr"); on.exit(par(usr))
+  par(usr = c(0, 1, 0, 1))
+  # correlation coefficient
+  r <- cor(x, y)
+  txt <- format(c(r, 0.123456789), digits = digits)[1]
+  txt <- paste("r= ", txt, sep = "")
+  text(0.5, 0.6, txt)
+
+  # p-value calculation
+  p <- cor.test(x, y)$p.value
+  txt2 <- format(c(p, 0.123456789), digits = digits)[1]
+  txt2 <- paste("p= ", txt2, sep = "")
+  if(p<0.05) txt2 <- paste("p= ", "<0.05", sep = "")
+  text(0.5, 0.4, txt2)
+}
 par(ps = 12, cex = 1, cex.main = 1)
-plot(mydata %>% select(SleepDuration, Weight, Tempreture, Activity, HeartRate), pch=16, col="blue", main="Matrix Scatterplot of SleepDuration, Weight, Tempreture, Activity and HeartRate")
+pairs(mydata %>% select(SleepDuration, Weight, Tempreture, Activity, HeartRate), upper.panel = panel.cor,
+      pch=16, col="blue", main="Matrix Scatterplot of SleepDuration, Weight, Tempreture, Activity and HeartRate", labels = c("Sleep Duration(hr)","Weight(kg)","Tempreture(°C)","Activity(steps)","Heart Rate(bpm)"))
 ```
 
-From the above graph, the variables seems that corrlated to each other , so it may arise multicollinearity problem. 
+
+From the above graph, the variables seems that corrlated to each other, so it may arise multicollinearity problem. Also, the correlation between sleep duration and acitivity by steps are significant, while the rest of variables with sleep duration correlation is not siginifiicant.
 
 
-Creating a multiple linear regression model included all variables except the date, becasue the date is a distinct identifier, like index; and Weather is kind of overlapping the information that provided by "Tempreture". 
+Creating a multiple linear regression model included all variables except the date, becasue the date is a distinct identifier, like index. 
 
 ```{r ml01, echo=TRUE}
-ml.saturated = lm(SleepDuration ~ Weight + Tempreture + Activity + HeartRate +  DayType + HavingDog, 
+ml.saturated = lm(SleepDuration ~  Weight + Tempreture + HeartRate + Activity + DayType + HavingDog, 
                   data= mydata)
 mlr_sum <- summary(ml.saturated)
 mlr_sum
@@ -275,7 +282,7 @@ Although some of p-value of the attributes are less than 0.05, the overall regre
 
 The RSE is about 1.455, which is an estimate of the average deviation of the observations around the regression line.
 
-More importanly, the adjusted R square is 0.2913, meaning that approximately 29% of the variation in sleep duration is accounted for by the variables in our model, which indicates that the model is kind of poor in predicating the duration of sleep. Maybe, we should investigate the assumptions of the model. 
+More importanly, the adjusted R square is 0.2446, meaning that approximately 25% of the variation in sleep duration is accounted for by the variables in our model, which indicates that the model is kind of poor in predicating the duration of sleep. Maybe, we should investigate the assumptions of the model. 
 
 
 
@@ -284,17 +291,19 @@ More importanly, the adjusted R square is 0.2913, meaning that approximately 29%
 plot(ml.saturated, which = c(1,2))
 ```
 
-According to the Q-Q plots, we will see that the data are follow the normal distributed. From the residual plot, we will also believe the data is normally distributed and it is independent. 
+According to the Q-Q plots, we will see that the data are follow the normal distributed. From the residual plot, we will also believe the data is normally distributed and it is independent. However, there is three outliers at the tail of the distribution which may have greate impact on the shape of the distributiopn.  
 
 
 
 # Conclusion
-Fitting linear models for predicting the duration of sleep seems do not have good performance based on the given data collected. And the data kind of not following normal distribution. But maybe because the size of the dataset is too small or we can use BoxCox to transform the data to see if the normality assumption is still violated.
+
+From the above study analysis on my collected sleep and health dataset, we would conclude that the sleep time per day has little association with my body weight, tempreture and heart rate. While the average sleep duration has negative linear relationship with activity by steps. There is significant difference on average sleep duration between having a dog or not. So does the day type. The analysis tells me that my sleep duration in weekend is larger than that in weekday; having a dog will increase my sleep duration as well. Additionally, my body weight has negative relationship with tempreture; it has positive relationship with heart rate and acitivity by steps. Tempreture and heart rate also has negative realtionship, which means the tempreture getting lower, my heart rate will increase. Last, my body weight and activity by steps are positivie associated, whcih I found is very counter intuitive.  
 
 
 
 ```{r info, echo= T}
 sessionInfo()
+
 ```
 
 
