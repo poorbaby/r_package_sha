@@ -307,6 +307,7 @@ If I could do it again, I may consider to record the following attribute:  the t
 I may consider to record my puppy information as well to see how pet will affect my life, such as dog body weight, the time of dog walking, the brand of food she is taking and how much did she eat per day. 
 
 
+
 ```{r info, echo= T}
 sessionInfo()
 
